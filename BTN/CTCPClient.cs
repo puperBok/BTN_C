@@ -38,5 +38,20 @@ namespace BTN
                 return null;
             }
         }
+
+        public void Send()
+        {
+
+        }
+
+        public void Recv()
+        {
+
+        }
+
+        public void Request()
+        {
+
+        }
     }
 }
