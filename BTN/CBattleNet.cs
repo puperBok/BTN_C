@@ -21,10 +21,5 @@ namespace BTN
         public void JoinRoom();
         public void GameReadyOK();
         public void GameReadyCancle();
-
-        private void Send();
-        private void Recv();
-        private void Request();
-
     }
 }

@@ -11,6 +11,8 @@ namespace BTN
     abstract class CSocketBase
     {
         protected Socket socket;
+        //protected byte[] buf;
+        //protected int bufSize;
         protected string address;
         protected int port;
         

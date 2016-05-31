@@ -38,5 +38,18 @@ namespace BTN
                 return null;
             }
         }
+
+        public void Send(byte[] data)
+        {
+            this.socket.Send(data, data.Length, 0);
+        }
+
+        public byte[] Recv(int dataSize)
+        {
+            byte[] buf = new byte[dataSize];
+            this.socket.Receive(buf);
+
+            return buf;
+        }
     }
 }
