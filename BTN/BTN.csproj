@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CAsyncTask.cs" />
     <Compile Include="CBattleNet.cs" />
     <Compile Include="CBuffer.cs" />
     <Compile Include="CPacket.cs" />

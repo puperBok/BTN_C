@@ -20,6 +20,7 @@ namespace BTN
         public void SetBuffer(byte[] data)
         {
             this.buffer = data;
+            this.bufferSize = data.Length;
         }
 
         public void CreateBuffer(int bufSize)
