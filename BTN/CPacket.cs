@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BTN
 {
-    class CPacket
+    public class CPacket
     {
         private CBuffer buf;
         private int dataLength;
         private PROTOCOL protocol;
         private string data;
 
+        public CPacket()
+        {
+            buf = new CBuffer();
+        }
+        
         public string GetData()
         {
             return this.data;

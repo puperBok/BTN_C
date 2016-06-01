@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BTN
 {
-    class CBuffer
+    public class CBuffer
     {
         private int bufferSize;
         private int currentIndex;

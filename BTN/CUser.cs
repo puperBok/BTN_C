@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BTN
 {
-    class CUser
+    public class CUser
     {
+        /*
         string userName;
         string loginSession;
+        */
     }
 }

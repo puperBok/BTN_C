@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 
 namespace BTN
 {
-    class CTCPClient : CSocketBase
+    public class CTCPClient : CSocketBase
     {
         public CAsyncTask asyncTask;
         public override Socket CreateSocket(string address, int port)
