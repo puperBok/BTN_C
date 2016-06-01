@@ -10,12 +10,10 @@ namespace BTN
     public abstract class CSocketBase
     {
         protected Socket socket;
-        //protected byte[] buf;
-        //protected int bufSize;
         protected string address;
         protected int port;
         
-        public abstract Socket CreateSocket(string address, int port);
+        public abstract bool CreateSocket(string address, int port);
         public void DestroySocket()
         {
             this.socket.Close();

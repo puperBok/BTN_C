@@ -5,9 +5,11 @@ using System.Text;
 
 namespace BTN
 {
-    public class CUser
+    public enum ERROR_CODE
     {
-        string userName;
-        string loginSession;
+        SOCKET_CREATE,
+        SOCKET_CONNECT,
+        SOCKET_SEND,
+        SOCKET_RECV
     }
 }

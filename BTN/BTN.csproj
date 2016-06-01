@@ -39,10 +39,12 @@
     <Compile Include="CAsyncTask.cs" />
     <Compile Include="CBattleNet.cs" />
     <Compile Include="CBuffer.cs" />
+    <Compile Include="CMessagePool.cs" />
     <Compile Include="CPacket.cs" />
     <Compile Include="CSocketBase.cs" />
     <Compile Include="CTCPClient.cs" />
     <Compile Include="CUser.cs" />
+    <Compile Include="ErrorCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protocol.cs" />
   </ItemGroup>

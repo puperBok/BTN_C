@@ -11,10 +11,15 @@ namespace BTN
         private int dataLength;
         private PROTOCOL protocol;
         private string data;
-
         public CPacket()
         {
+
+        }
+
+        public CPacket(byte[] row_packet)
+        {
             buf = new CBuffer();
+            buf.SetBuffer(row_packet);
         }
         
         public string GetData()
