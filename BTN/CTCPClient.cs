@@ -38,26 +38,15 @@ namespace BTN
                 return null;
             }
 
-            // 작업 중인 소켓을 저장하기 위해 sockClient 할당
             this.asyncTask.workingSocket = this.socket;
-
-            // 비동기적으로 들어오는 자료를 수신하기 위해 BeginReceive 메서드 사용
             this.socket.BeginReceive(this.asyncTask.buf, 0, this.asyncTask.buf.Length, SocketFlags.None, this.asyncTask.recvHandler, this.asyncTask);
 
             return this.socket;
         }
 
-        public void Send(byte[] data)
+        public void SendToServer(byte[] msg)
         {
-            this.socket.Send(data, data.Length, 0);
-        }
-
-        public byte[] Recv(int dataSize)
-        {
-            byte[] buf = new byte[dataSize];
-            this.socket.Receive(buf);
-
-            return buf;
+            this.asyncTask.send(msg);
         }
     }
 }
