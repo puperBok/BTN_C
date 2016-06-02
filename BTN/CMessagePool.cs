@@ -7,18 +7,6 @@ namespace BTN
 {
     public class CMessagePool
     {
-        static CMessagePool instance = new CMessagePool();
-        private CMessagePool() { }
-        public static CMessagePool GetInstance()
-        {
-            if(instance == null)
-            {
-                instance = new CMessagePool();
-            }
-
-            return instance;
-        }
-
         private Queue<CPacket> packetPool = new Queue<CPacket>();
 
         public CPacket TakeMessage()

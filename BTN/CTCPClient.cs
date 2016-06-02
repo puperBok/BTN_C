@@ -11,17 +11,12 @@ namespace BTN
     {
         private AsyncCallback recvHandler;
         private AsyncCallback sendHandler;
+        private CMessagePool msgPool;
 
-        public string Error
+        private string Error;
+        public string GetError()
         {
-            get
-            {
-                return Error;
-            }
-            set
-            {
-                Error = value;
-            }
+            return Error;
         }
 
         private void ErrorHandler(ERROR_CODE code, string error_msg)
@@ -63,8 +58,9 @@ namespace BTN
             return true;
         }
 
-        public bool ConnectToServer()
+        public bool ConnectToServer(CMessagePool msgPool)
         {
+            this.msgPool = msgPool;
             try
             {
                 IPAddress ipAddr = System.Net.IPAddress.Parse(this.address);
@@ -122,7 +118,7 @@ namespace BTN
             {
                 //자료처리
                 CPacket packet = new CPacket(at.buf);
-                CMessagePool.GetInstance().PushMessage(packet);
+                this.msgPool.PushMessage(packet);
             }
 
             try
