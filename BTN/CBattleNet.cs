@@ -9,7 +9,7 @@ namespace BTN
 {
     public class CBattleNet
     {
-        private string ipAddress = "192.168.0.8";
+        private string ipAddress = "203.230.103.45";
         private int port = 9080;
         private string gameKey;
         private CUser user;
@@ -19,6 +19,15 @@ namespace BTN
         public string GetError()
         {
             return this.conn.GetError();
+        }
+
+        public CBattleNet(string g_key, CUser user, string ipAddress)
+        {
+            this.gameKey = g_key;
+            this.user = user;
+            this.ipAddress = ipAddress;
+            this.conn = new CTCPClient();
+            this.msgPool = new CMessagePool();
         }
 
         public CBattleNet(string g_key, CUser user)
@@ -79,7 +88,7 @@ namespace BTN
 
         public bool TestSendToServerForPacket(string data)
         {
-            byte[] str = CPacket.EncodedPacket(PROTOCOL.TEST_ECHO, data);
+            byte[] str = CPacket.EncodedPacket_ver2(PROTOCOL.TEST_ECHO, data);
             if (!this.conn.RequestToServer(str))
                 return false;
 

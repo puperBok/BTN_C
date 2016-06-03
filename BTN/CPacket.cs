@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 
 namespace BTN
 {
@@ -44,7 +45,44 @@ namespace BTN
             System.Buffer.BlockCopy(dataLengthBytes, 0, packet, protocolBytes.Length, dataLengthBytes.Length);
             System.Buffer.BlockCopy(dataBytes, 0, packet, protocolBytes.Length + dataLengthBytes.Length, dataBytes.Length);
 
+            if (BitConverter.IsLittleEndian == true)
+            {
+                Array.Reverse(packet);
+            }
+
             return packet;
+        }
+
+        public static byte[] EncodedPacket_ver2(PROTOCOL protocol, string data)
+        {
+            byte[] protocolBytes = new byte[4];
+            protocolBytes = BitConverter.GetBytes((int)protocol);
+
+            byte[] dataLengthBytes = new byte[4];
+            dataLengthBytes = BitConverter.GetBytes((int)data.Length);
+
+            byte[] dataBytes = Encoding.Default.GetBytes(data);
+
+            byte[] packet = new byte[4 + 4 + dataBytes.Length];
+            System.Buffer.BlockCopy(protocolBytes, 0, packet, 0, protocolBytes.Length);
+            System.Buffer.BlockCopy(dataLengthBytes, 0, packet, protocolBytes.Length, dataLengthBytes.Length);
+            System.Buffer.BlockCopy(dataBytes, 0, packet, protocolBytes.Length + dataLengthBytes.Length, dataBytes.Length);
+
+            /*
+            if(BitConverter.IsLittleEndian == true)
+            {
+                Array.Reverse(packet);
+            }
+            */
+
+            return packet;
+        }
+
+        public static string EncodedPacket_ver3(PROTOCOL protocol, string data)
+        {
+            string xml = "";
+
+            return xml;
         }
 
         public int DecodedPacket()
@@ -70,6 +108,29 @@ namespace BTN
 
             byte[] data = new byte[dataLength];
             System.Buffer.BlockCopy(buffer, 8, data, 0, dataLength);
+            this.packet_data = data;
+
+            return buffer.Length;
+        }
+
+        public int DecodedPacket_ver2()
+        {
+            if (buffer == null)
+            {
+                return -1;
+            }
+
+            int protocol = -1;
+            protocol = BitConverter.ToInt32(buffer, 0);
+            this.packet_protocol = (PROTOCOL)protocol;
+
+            int dataLength = -1;
+            dataLength = BitConverter.ToInt32(buffer, 4);
+            this.packet_data_size = dataLength;
+
+            byte[] data = new byte[dataLength];
+            System.Buffer.BlockCopy(buffer, 8, data, 0, dataLength);
+            this.packet_data = data;
 
             return buffer.Length;
         }

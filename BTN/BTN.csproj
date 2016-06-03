@@ -34,6 +34,8 @@
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CAsyncTask.cs" />
@@ -43,6 +45,7 @@
     <Compile Include="CSocketBase.cs" />
     <Compile Include="CTCPClient.cs" />
     <Compile Include="CUser.cs" />
+    <Compile Include="CXmlManager.cs" />
     <Compile Include="ErrorCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protocol.cs" />
