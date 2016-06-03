@@ -11,33 +11,39 @@ namespace BTN
         private XmlDocument document;
         private XmlElement root;
         private XmlElement dataNode;
-        public CXmlManager(string title)
+        private int pushCount;
+
+        public struct XMLPACKET
         {
-            document = new XmlDataDocument();
-            root = document.CreateElement(title);
+            public int dataCount;
+            public PROTOCOL protocol;
+            public List<string> datas;
+        }
+
+        public CXmlManager()
+        {
+            document = new XmlDocument();
+            root = document.CreateElement("PACKET");
             document.AppendChild(root);
             dataNode = this.document.CreateElement("DATAS");
             root.AppendChild(dataNode);
+            pushCount = 0;
         }
 
-        public void SetProtocol(PROTOCOL protocol)
+        private void SetProtocol(PROTOCOL protocol)
         {
-            XmlElement node = this.document.CreateElement("PROTOCOL");
-            node.SetAttribute("contents", ((int)protocol).ToString());
-            root.AppendChild(node);
+            root.SetAttribute("PROTOCOL", ((int)protocol).ToString());
         }
 
-        public void SetDataCount(int count)
+        private void SetDataCount(int count)
         {
-            XmlElement node = this.document.CreateElement("DATA_COUNT");
-            node.SetAttribute("contents", count.ToString());
-            root.AppendChild(node);
+            root.SetAttribute("DATA_COUNT", (count).ToString());
         }
 
-        public void PushData(string data)
+        private void PushData(string data)
         {
             XmlElement node = this.document.CreateElement("DATA");
-            node.SetAttribute("contents", data);
+            node.SetAttribute("BY" + (this.pushCount++).ToString(), data);
             dataNode.AppendChild(node);
         }
 
@@ -50,37 +56,43 @@ namespace BTN
 
             this.SetProtocol(protocol);
             this.SetDataCount(datas.Count);
-            foreach(string o in datas)
+            foreach (string o in datas)
             {
                 PushData(o);
             }
         }
 
-        public string OutPutByString()
+        public string ByString()
         {
-            return document.InnerText;
+            return document.InnerXml;
         }
 
-        public void ParseFromXml(string xml)
+        public void ByFile(string filePath, string fileName)
         {
-            PROTOCOL protocol;
-            int dataCount;
-            List<string> datas = new List<string>();
+            document.Save(filePath + "/" + fileName + ".xml");
+        }
 
+        public static XMLPACKET ParseFromXml(string xml)
+        {
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xml);
 
-            XmlElement e_protoocl = doc["PROTOCOL"];
-            protocol = (PROTOCOL)int.Parse(e_protoocl.GetAttribute("contents"));
+            List<string> datas = new List<string>();
+            XmlElement xml_packet = doc.DocumentElement;
+            PROTOCOL protocol = (PROTOCOL)int.Parse(xml_packet.GetAttribute("PROTOCOL"));
+            int data_count = int.Parse(xml_packet.GetAttribute("DATA_COUNT"));
 
-            XmlElement e_data_count = doc["DATA_COUNT"];
-            dataCount = int.Parse(e_data_count.GetAttribute("contents"));
-
-            XmlElement e_datas = doc["DATAS"];
-            foreach (XmlNode o in e_datas.ChildNodes)
+            foreach (XmlNode xml_data in xml_packet.SelectSingleNode("DATAS").ChildNodes)
             {
-                datas.Add(o.SelectSingleNode("DATA").SelectSingleNode("contents").InnerText);
+                datas.Add(xml_data.Attributes.Item(0).InnerText);
             }
+
+            XMLPACKET v = new XMLPACKET();
+            v.protocol = protocol;
+            v.dataCount = data_count;
+            v.datas = datas;
+
+            return v;
         }
     }
 }

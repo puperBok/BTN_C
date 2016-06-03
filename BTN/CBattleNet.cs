@@ -77,23 +77,22 @@ namespace BTN
 
         }
 
-        public bool TestSendToServerForString(string msg)
+        public bool SendToServerXml(List<string> datas)
         {
-            byte[] str = Encoding.Default.GetBytes(msg);
+            byte[] str = CPacket.EncodedPacketForXml(PROTOCOL.TEST_ECHO, datas);
             if (!this.conn.RequestToServer(str))
                 return false;
 
             return true;
         }
 
-        public bool TestSendToServerForPacket(string data)
+        public bool SendToServerBinary(string data)
         {
-            byte[] str = CPacket.EncodedPacket_ver2(PROTOCOL.TEST_ECHO, data);
+            byte[] str = CPacket.EncodedPacketForBinary(PROTOCOL.TEST_ECHO, data);
             if (!this.conn.RequestToServer(str))
                 return false;
 
             return true;
         }
-
     }
 }
