@@ -83,11 +83,6 @@ namespace BTN
             return true;
         }
 
-        public void DisconnctToServer()
-        {
-            this.socket.Close();
-        }
-
         public bool RequestToServer(byte[] msg)
         {
             CAsyncTask at = new CAsyncTask(1);

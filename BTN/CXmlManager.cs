@@ -8,8 +8,10 @@ namespace BTN
 {
     public struct XMLPACKET
     {
-        public int dataCount;
+        public string userName;
+        public string userSession;
         public PROTOCOL protocol;
+        public int dataCount;
         public List<string> datas;
     }
 
@@ -40,6 +42,16 @@ namespace BTN
             root.SetAttribute("DATA_COUNT", (count).ToString());
         }
 
+        private void SetUserName(string user_name)
+        {
+            root.SetAttribute("USER_NAME", user_name);
+        }
+
+        private void SetUserSession(string user_session)
+        {
+            root.SetAttribute("USER_SESSION", user_session);
+        }
+
         private void PushData(string data)
         {
             XmlElement node = this.document.CreateElement("DATA");
@@ -47,13 +59,15 @@ namespace BTN
             dataNode.AppendChild(node);
         }
 
-        public void XML_FORM(PROTOCOL protocol, List<string> datas)
+        public void XML_FORM(string user_name, string user_session, PROTOCOL protocol, List<string> datas)
         {
             if (datas.Count == 0)
             {
                 return;
             }
 
+            this.SetUserName(user_name);
+            this.SetUserSession(user_session);
             this.SetProtocol(protocol);
             this.SetDataCount(datas.Count);
             foreach (string o in datas)
@@ -80,6 +94,8 @@ namespace BTN
 
             List<string> datas = new List<string>();
             XmlElement xml_packet = doc.DocumentElement;
+            string user_name = xml_packet.GetAttribute("USER_NAME");
+            string user_session = xml_packet.GetAttribute("USER_SESSION");
             PROTOCOL protocol = (PROTOCOL)int.Parse(xml_packet.GetAttribute("PROTOCOL"));
             int data_count = int.Parse(xml_packet.GetAttribute("DATA_COUNT"));
 
@@ -89,6 +105,8 @@ namespace BTN
             }
 
             XMLPACKET v = new XMLPACKET();
+            v.userName = user_name;
+            v.userSession = user_session;
             v.protocol = protocol;
             v.dataCount = data_count;
             v.datas = datas;

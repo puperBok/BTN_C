@@ -7,7 +7,12 @@ namespace BTN
 {
     public class CUser
     {
-        string userName;
-        string loginSession;
+        public CUser(string userName, string userSession)
+        {
+            this.userName = userName;
+            this.loginSession = userSession;
+        }
+        public string userName;
+        public string loginSession;
     }
 }

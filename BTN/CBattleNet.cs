@@ -49,7 +49,7 @@ namespace BTN
 
         public bool DisconnectToServer()
         {
-            conn.DisconnctToServer();
+            conn.DestroySocket();
             return true;
         }
 
@@ -76,7 +76,7 @@ namespace BTN
 
         public bool TestEcho(List<string> datas)
         {
-            byte[] row_packet = CPacket.EncodedPacketForXml(PROTOCOL.TEST_ECHO, datas);
+            byte[] row_packet = CPacket.EncodedPacketForXml(user.userName, user.loginSession, PROTOCOL.TEST_ECHO, datas);
             if (!conn.RequestToServer(row_packet))
                 return false;
 

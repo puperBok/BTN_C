@@ -46,11 +46,11 @@ namespace BTN
             return packet;
         }
 
-        public static byte[] EncodedPacketForXml(PROTOCOL protocol, List<string> datas)
+        public static byte[] EncodedPacketForXml(string user_name, string user_session, PROTOCOL protocol, List<string> datas)
         {
             CXmlManager xml = new CXmlManager();
 
-            xml.XML_FORM(protocol, datas);
+            xml.XML_FORM(user_name, user_session, protocol, datas);
 
             byte[] packet = Encoding.Default.GetBytes(xml.ByString());
 
@@ -90,11 +90,7 @@ namespace BTN
                 return -1;
             }
             string xml = Encoding.Default.GetString(buffer);
-            XMLPACKET xp = CXmlManager.ParseFromXml(xml);
-
-            this.xmlPacket.protocol = xp.protocol;
-            this.xmlPacket.dataCount = xp.dataCount;
-            this.xmlPacket.datas = xp.datas;
+            this.xmlPacket = CXmlManager.ParseFromXml(xml);
 
             return buffer.Length;
         }
