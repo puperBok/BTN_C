@@ -6,25 +6,22 @@ using System.Xml;
 
 namespace BTN
 {
+    public struct BINARYPACKET
+    {
+        public PROTOCOL protocol;
+        public int dataSize;
+        public byte[] data;
+    }
     public class CPacket
     {
         public CPacket(byte[] row_packet)
         {
             this.buffer = row_packet;
         }
-        private PROTOCOL packet_protocol;
-        private int packet_data_size;
-        private byte[] packet_data;
-        public List<string> packet_datas;
-        private int packet_data_count;
         private byte[] buffer;
-
-        public PROTOCOL GetPacketProtocol() { return this.packet_protocol; }
-        public string GetPacketData()
-        {
-            if (packet_data != null) return Encoding.Default.GetString(this.packet_data);
-            else return null;
-        }
+        
+        public XMLPACKET xmlPacket;
+        public BINARYPACKET binPacket;
 
         public static byte[] EncodedPacketForBinary(PROTOCOL protocol, string data)
         {
@@ -73,15 +70,15 @@ namespace BTN
 
             int protocol = -1;
             protocol = BitConverter.ToInt32(buffer, 0);
-            this.packet_protocol = (PROTOCOL)protocol;
+            this.binPacket.protocol = (PROTOCOL)protocol;
 
             int dataLength = -1;
             dataLength = BitConverter.ToInt32(buffer, 4);
-            this.packet_data_size = dataLength;
+            this.binPacket.dataSize = dataLength;
 
             byte[] data = new byte[dataLength];
             System.Buffer.BlockCopy(buffer, 8, data, 0, dataLength);
-            this.packet_data = data;
+            this.binPacket.data = data;
 
             return buffer.Length;
         }
@@ -93,11 +90,11 @@ namespace BTN
                 return -1;
             }
             string xml = Encoding.Default.GetString(buffer);
-            CXmlManager.XMLPACKET xp = CXmlManager.ParseFromXml(xml);
+            XMLPACKET xp = CXmlManager.ParseFromXml(xml);
 
-            this.packet_protocol = xp.protocol;
-            this.packet_data_count = xp.dataCount;
-            this.packet_datas = xp.datas;
+            this.xmlPacket.protocol = xp.protocol;
+            this.xmlPacket.dataCount = xp.dataCount;
+            this.xmlPacket.datas = xp.datas;
 
             return buffer.Length;
         }

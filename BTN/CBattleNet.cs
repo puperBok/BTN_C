@@ -9,25 +9,15 @@ namespace BTN
 {
     public class CBattleNet
     {
-        private string ipAddress = "203.230.103.45";
+        private string ipAddress = "192.168.0.8";
         private int port = 9080;
         private string gameKey;
         private CUser user;
         private CTCPClient conn;
-        private CMessagePool msgPool;
         
         public string GetError()
         {
             return this.conn.GetError();
-        }
-
-        public CBattleNet(string g_key, CUser user, string ipAddress)
-        {
-            this.gameKey = g_key;
-            this.user = user;
-            this.ipAddress = ipAddress;
-            this.conn = new CTCPClient();
-            this.msgPool = new CMessagePool();
         }
 
         public CBattleNet(string g_key, CUser user)
@@ -35,27 +25,34 @@ namespace BTN
             this.gameKey = g_key;
             this.user = user;
             this.conn = new CTCPClient();
-            this.msgPool = new CMessagePool();
         }
         
         public void SetUser()
         {
 
         }
-        public bool ConnectToServer()
+
+        public bool ConnectToServer(CMessagePool messagePool)
         {
             if(!this.conn.CreateSocket(ipAddress, port))
             {
                 return false;
             }
 
-            if(!this.conn.ConnectToServer(msgPool))
+            if (!this.conn.ConnectToServer(messagePool))
             {
                 return false;
             }
 
             return true;
         }
+
+        public bool DisconnectToServer()
+        {
+            conn.DisconnctToServer();
+            return true;
+        }
+
         public void RequestRoomList()
         {
 
@@ -77,19 +74,10 @@ namespace BTN
 
         }
 
-        public bool SendToServerXml(List<string> datas)
+        public bool TestEcho(List<string> datas)
         {
-            byte[] str = CPacket.EncodedPacketForXml(PROTOCOL.TEST_ECHO, datas);
-            if (!this.conn.RequestToServer(str))
-                return false;
-
-            return true;
-        }
-
-        public bool SendToServerBinary(string data)
-        {
-            byte[] str = CPacket.EncodedPacketForBinary(PROTOCOL.TEST_ECHO, data);
-            if (!this.conn.RequestToServer(str))
+            byte[] row_packet = CPacket.EncodedPacketForXml(PROTOCOL.TEST_ECHO, datas);
+            if (!conn.RequestToServer(row_packet))
                 return false;
 
             return true;

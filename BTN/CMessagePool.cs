@@ -7,28 +7,28 @@ namespace BTN
 {
     public class CMessagePool
     {
-        private Queue<CPacket> packetPool = new Queue<CPacket>();
+        private Queue<CPacket> packetQue = new Queue<CPacket>();
+
+        public void PushMessge(CPacket packet)
+        {
+            this.packetQue.Enqueue(packet);
+        }
 
         public CPacket TakeMessage()
         {
-            if(queIsEmpty() == true)
+            if(this.QueIsEmpty())
             {
                 return null;
             }
             else
             {
-                return packetPool.Dequeue();
+                return this.packetQue.Dequeue();
             }
         }
 
-        public void PushMessage(CPacket msg)
+        public bool QueIsEmpty()
         {
-            this.packetPool.Enqueue(msg);
-        }
-
-        private bool queIsEmpty()
-        {
-            if(this.packetPool.Count == 0)
+            if(this.packetQue.Count == 0)
             {
                 return true;
             }

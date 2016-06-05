@@ -6,19 +6,19 @@ using System.Xml;
 
 namespace BTN
 {
+    public struct XMLPACKET
+    {
+        public int dataCount;
+        public PROTOCOL protocol;
+        public List<string> datas;
+    }
+
     public class CXmlManager
     {
         private XmlDocument document;
         private XmlElement root;
         private XmlElement dataNode;
         private int pushCount;
-
-        public struct XMLPACKET
-        {
-            public int dataCount;
-            public PROTOCOL protocol;
-            public List<string> datas;
-        }
 
         public CXmlManager()
         {
@@ -43,7 +43,7 @@ namespace BTN
         private void PushData(string data)
         {
             XmlElement node = this.document.CreateElement("DATA");
-            node.SetAttribute("BY" + (this.pushCount++).ToString(), data);
+            node.SetAttribute("DOT", data);
             dataNode.AppendChild(node);
         }
 
@@ -58,7 +58,8 @@ namespace BTN
             this.SetDataCount(datas.Count);
             foreach (string o in datas)
             {
-                PushData(o);
+                this.PushData(o);
+                this.pushCount++;
             }
         }
 

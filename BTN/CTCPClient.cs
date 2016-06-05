@@ -61,6 +61,8 @@ namespace BTN
         public bool ConnectToServer(CMessagePool msgPool)
         {
             this.msgPool = msgPool;
+            this.recvHandler = new AsyncCallback(this.handlerOfRecv);
+            this.sendHandler = new AsyncCallback(this.handlerOfSend);
             try
             {
                 IPAddress ipAddr = System.Net.IPAddress.Parse(this.address);
@@ -79,6 +81,11 @@ namespace BTN
             this.socket.BeginReceive(at.buf, 0, at.buf.Length, SocketFlags.None, recvHandler, at);
 
             return true;
+        }
+
+        public void DisconnctToServer()
+        {
+            this.socket.Close();
         }
 
         public bool RequestToServer(byte[] msg)
@@ -100,7 +107,7 @@ namespace BTN
             return true;
         }
 
-        private bool handlerOfRecv(IAsyncResult ar)
+        private void handlerOfRecv(IAsyncResult ar)
         {
             CAsyncTask at = (CAsyncTask)ar.AsyncState;
             Int32 recvBytes;
@@ -111,14 +118,14 @@ namespace BTN
             }
             catch
             {
-                return false;
+                return;
             }
 
             if (recvBytes > 0)
             {
                 //자료처리
-                CPacket packet = new CPacket(at.buf);
-                this.msgPool.PushMessage(packet);
+                //패킷들을 담아두고 자세한 처리는 위에서
+                msgPool.PushMessge(new CPacket(at.buf));
             }
 
             try
@@ -130,13 +137,13 @@ namespace BTN
             catch (Exception ex)
             {
                 this.ErrorHandler(ERROR_CODE.SOCKET_RECV, ex.ToString());
-                return false;
+                return;
             }
 
-            return true;
+            return;
         }
 
-        private bool handlerOfSend(IAsyncResult ar)
+        private void handlerOfSend(IAsyncResult ar)
         {
             CAsyncTask at = (CAsyncTask)ar.AsyncState;
             Int32 sentBytes;
@@ -148,10 +155,10 @@ namespace BTN
             catch (Exception ex)
             {
                 this.ErrorHandler(ERROR_CODE.SOCKET_SEND, ex.ToString());
-                return false;
+                return;
             }
 
-            return true;
+            return;
         }
     }
 }
