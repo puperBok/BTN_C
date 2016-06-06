@@ -12,6 +12,7 @@ namespace BTN
             this.userName = userName;
             this.loginSession = userSession;
         }
+        
         public string userName;
         public string loginSession;
     }

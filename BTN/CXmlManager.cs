@@ -10,6 +10,7 @@ namespace BTN
     {
         public string userName;
         public string userSession;
+        public string gameKey;
         public PROTOCOL protocol;
         public int dataCount;
         public List<string> datas;
@@ -52,6 +53,11 @@ namespace BTN
             root.SetAttribute("USER_SESSION", user_session);
         }
 
+        private void SetGameKey(string game_key)
+        {
+            root.SetAttribute("GAME_KEY", game_key);
+        }
+
         private void PushData(string data)
         {
             XmlElement node = this.document.CreateElement("DATA");
@@ -59,7 +65,7 @@ namespace BTN
             dataNode.AppendChild(node);
         }
 
-        public void XML_FORM(string user_name, string user_session, PROTOCOL protocol, List<string> datas)
+        public void XML_FORM(string user_name, string user_session, string game_key, PROTOCOL protocol, List<string> datas)
         {
             if (datas.Count == 0)
             {
@@ -68,6 +74,7 @@ namespace BTN
 
             this.SetUserName(user_name);
             this.SetUserSession(user_session);
+            this.SetGameKey(game_key);
             this.SetProtocol(protocol);
             this.SetDataCount(datas.Count);
             foreach (string o in datas)
@@ -96,6 +103,7 @@ namespace BTN
             XmlElement xml_packet = doc.DocumentElement;
             string user_name = xml_packet.GetAttribute("USER_NAME");
             string user_session = xml_packet.GetAttribute("USER_SESSION");
+            string game_key = xml_packet.GetAttribute("GAME_KEY");
             PROTOCOL protocol = (PROTOCOL)int.Parse(xml_packet.GetAttribute("PROTOCOL"));
             int data_count = int.Parse(xml_packet.GetAttribute("DATA_COUNT"));
 
@@ -107,6 +115,7 @@ namespace BTN
             XMLPACKET v = new XMLPACKET();
             v.userName = user_name;
             v.userSession = user_session;
+            v.gameKey = game_key;
             v.protocol = protocol;
             v.dataCount = data_count;
             v.datas = datas;

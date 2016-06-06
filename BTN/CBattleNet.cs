@@ -26,11 +26,6 @@ namespace BTN
             this.user = user;
             this.conn = new CTCPClient();
         }
-        
-        public void SetUser()
-        {
-
-        }
 
         public bool ConnectToServer(CMessagePool messagePool)
         {
@@ -53,30 +48,78 @@ namespace BTN
             return true;
         }
 
-        public void RequestRoomList()
+        public bool LobbyEnter(List<string> datas)
         {
+            byte[] row_packet = CPacket.EncodedPacketForXml(user.userName, user.loginSession, this.gameKey, PROTOCOL.LOBBY_ENTER, datas);
+            if (!conn.RequestToServer(row_packet))
+                return false;
 
+            return true;
         }
-        public void CreateRoom()
+
+        public bool RequestRoomList(List<string> datas)
         {
+            byte[] row_packet = CPacket.EncodedPacketForXml(user.userName, user.loginSession, this.gameKey, PROTOCOL.ROOM_LIST_REQ, datas);
+            if (!conn.RequestToServer(row_packet))
+                return false;
 
+            return true;
         }
-        public void JoinRoom()
+
+        public bool CreateRoom(List<string> datas)
         {
+            byte[] row_packet = CPacket.EncodedPacketForXml(user.userName, user.loginSession, this.gameKey, PROTOCOL.ROOM_OPEN, datas);
+            if (!conn.RequestToServer(row_packet))
+                return false;
 
+            return true;
         }
+
+        public bool JoinRoom(List<string> datas)
+        {
+            byte[] row_packet = CPacket.EncodedPacketForXml(user.userName, user.loginSession, this.gameKey, PROTOCOL.ROOM_JOIN, datas);
+            if (!conn.RequestToServer(row_packet))
+                return false;
+
+            return true;
+        }
+
+        public bool LeaveRoomForGuest(List<string> datas)
+        {
+            byte[] row_packet = CPacket.EncodedPacketForXml(user.userName, user.loginSession, this.gameKey, PROTOCOL.GUEST_ROOM_LEAVE, datas);
+            if (!conn.RequestToServer(row_packet))
+                return false;
+
+            return true;
+        }
+
+        public bool LeaveRoomForHost(List<string> datas)
+        {
+            byte[] row_packet = CPacket.EncodedPacketForXml(user.userName, user.loginSession, this.gameKey, PROTOCOL.HOST_ROOM_LEAVE, datas);
+            if (!conn.RequestToServer(row_packet))
+                return false;
+
+            return true;
+        }
+
         public void GameReadyOK()
         {
 
         }
+
         public void GameReadyCancle()
+        {
+
+        }
+
+        public void GameStart()
         {
 
         }
 
         public bool TestEcho(List<string> datas)
         {
-            byte[] row_packet = CPacket.EncodedPacketForXml(user.userName, user.loginSession, PROTOCOL.TEST_ECHO, datas);
+            byte[] row_packet = CPacket.EncodedPacketForXml(user.userName, user.loginSession, this.gameKey, PROTOCOL.TEST_ECHO, datas);
             if (!conn.RequestToServer(row_packet))
                 return false;
 

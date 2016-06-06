@@ -46,11 +46,11 @@ namespace BTN
             return packet;
         }
 
-        public static byte[] EncodedPacketForXml(string user_name, string user_session, PROTOCOL protocol, List<string> datas)
+        public static byte[] EncodedPacketForXml(string user_name, string user_session, string game_key, PROTOCOL protocol, List<string> datas)
         {
             CXmlManager xml = new CXmlManager();
 
-            xml.XML_FORM(user_name, user_session, protocol, datas);
+            xml.XML_FORM(user_name, user_session, game_key, protocol, datas);
 
             byte[] packet = Encoding.Default.GetBytes(xml.ByString());
 
